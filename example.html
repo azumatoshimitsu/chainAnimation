@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>chainAnimation.js</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="chainAnimation.js"></script>
+<style>
+body {
+	margin: 20px auto 100px auto;
+	max-width: 800px;
+}
+.wrap-code {
+	background: #333;
+	margin-bottom: 40px;
+	padding: 20px 30px; 
+	color: #FFF;
+	border-radius: 10px;
+}
+code {
+	white-space: pre;
+}
+.example {
+	position: relative;
+	margin: 20px; 
+	min-height: 120px;
+}
+.obj {
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: #333;
+	width: 100px;
+	height: 100px;
+	border-radius: 10px;
+	color: #FFF;
+}
+.red {
+	background: red;
+	left: 320px;
+}
+.right {
+	background: blue;
+	left: 120px;
+}
+</style>
+</head>
+<body>
+<h1>chainAnimation.js</h1>
+<p>chainAnimation.js は JSON データを受け取ってアニメーションをつなげるライブラリです。</p>
+
+<section>
+<h2>Install</h2>
+<p class="wrap-code">
+<code>&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;chainAnimation.js&quot;&gt;&lt;/script&gt;</code>
+</p>
+</section>
+
+<section>
+<h2>JSON Semantics</h2>
+<p class="wrap-code">
+<code>{
+	'self'                    : $('target object'), //Animation target 
+	'startState'         : { 'CSS Selector' : 'CSS Property' }, //Start CSS
+	'endState'           : { 'CSS Selector' : 'CSS Property' }, //End CSS
+	'type'                  : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
+	'delay'                 : Number,
+	'duration'            : Number,
+	'easing'               : String 'jQuery easing'
+	'listenerObj'        : $('trigger object'), //Trigger Object
+	'listenerEvt'         : String, // Trigger Event
+	'completeEvent'  : String, //jQuery animation complete Event name
+	'completeFunc'   : Function, //jQuery animation complete Event function
+	'customFunc'      : Function //Custom funtion name
+}</code>
+<p>
+</section>
+
+<section>
+<h2>Example</h2>
+<ul>
+<li> <a href="#normal-section">通常のアニメーションチェーン</a></li>
+<li> <a href="#function-section">途中に関数を入れる</a></li>
+<li> <a href="#seens-section">シーンを分けてシーンとシーンの間になにか処理を入れる</a></li>
+<li> <a href="#static-section">なにもしない</a></li>
+</ul>
+<h3 id="normal-section">通常のアニメーションチェーン</h3>
+<a href="#" id="normal">Start animation</a>
+<div class="example">
+	<div id="normal-0" class="obj"></div>
+	<div id="normal-1" class="obj red"></div>
+	<div id="normal-2" class="obj right"></div>
+<script>
+var seen = [{
+        'self': $('#normal-0'),
+        'startState': { 'left': '0' },
+        'endState': { 'left': '120px' },
+        'duration': 700,
+        'delay': 0,
+        'completeEvent': 'end'
+    }, {
+        'self': $('#normal-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#normal-0'),
+        'listenerEvt': 'end',
+        'completeEvent': 'end'
+    }, {
+        'self': $('#normal-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#normal-1'),
+        'listenerEvt': 'end'
+}];
+$('#normal').bind('click', function(e) { e.preventDefault(); chainAnimation(seen); });
+</script>
+</div>
+<h4>HTML</h4>
+<p class="wrap-code">
+<code>&lt;div class=&quot;example&quot;&gt;
+	&lt;div id=&quot;normal-0&quot; class=&quot;obj&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;normal-1&quot; class=&quot;obj red&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;normal-2&quot; class=&quot;obj right&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+</p>
+<h4>JavaScript</h4>
+<p class="wrap-code">
+<code>var seen = [{
+        'self': $('#normal-0'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'duration': 700,
+        'delay': 800,//アニメーション開始までの遅延
+        'completeEvent': 'end'//アニメーション終了後のイベント名
+    }, {
+        'self': $('#normal-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#normal-0'),//このオブジェクトの
+        'listenerEvt': 'end',//end イベントが発火したらアニメーション開始
+        'completeEvent': 'end'
+    }, {
+        'self': $('#normal-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#normal-1'),
+        'listenerEvt': 'end'
+}];
+chainAnimation(seen);</code>
+</p>
+
+<h3 id="function-section">途中に関数を入れる</h3>
+<a href="#" id="custom-func">Start animation</a>
+<div class="example">
+	<div id="custom-func-0" class="obj"></div>
+	<div id="custom-func-1" class="obj red"></div>
+	<div id="custom-func-2" class="obj right"></div>
+<script>
+var custom = [{
+        'self': $('#custom-func-0'),
+        'type': 'customFunc',//customFunc で関数を実行
+        'completeEvent': 'end',
+        'customFunc': myCustomFunc//実行する customFunc 関数名
+    }, {
+        'self': $('#custom-func-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'duration': 700,
+        'delay': 0,
+        'listenerObj': $('#custom-func-0'),
+        'listenerEvt': 'end',
+        'completeEvent': 'end'
+    }, {
+        'self': $('#custom-func-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#custom-func-1'),
+        'listenerEvt': 'end'
+}];
+function myCustomFunc(obj) {
+	obj.self.text('add text');
+	setTimeout(function() {
+		obj.self.trigger(obj.completeEvent, this);
+	}, 500);
+}
+$('#custom-func').bind('click', function(e) { e.preventDefault(); chainAnimation(custom); });
+</script>
+</div>
+<h4>HTML</h4>
+<p class="wrap-code">
+<code>&lt;div class=&quot;example&quot;&gt;
+	&lt;div id=&quot;custom-func-0&quot; class=&quot;obj&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;custom-func-1&quot; class=&quot;obj red&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;custom-func-2&quot; class=&quot;obj right&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+</p>
+<h4>JavaScript</h4>
+<p class="wrap-code">
+<code>var custom = [{
+        'self': $('#custom-func-0'),
+        'type': 'customFunc',//customFunc で関数を実行
+        'completeEvent': 'end',
+        'customFunc': myCustomFunc//実行する customFunc 関数名
+    }, {
+        'self': $('#custom-func-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'duration': 700,
+        'delay': 0,
+        'listenerObj': $('#custom-func-0'),
+        'listenerEvt': 'end',
+        'completeEvent': 'end'
+    }, {
+        'self': $('#custom-func-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#custom-func-1'),
+        'listenerEvt': 'end'
+}];
+function myCustomFunc(obj) {
+	obj.self.text('add text');
+	setTimeout(function() {
+		obj.self.trigger(obj.completeEvent, this);
+	}, 500);
+}
+chainAnimation(custom);</code>
+</p>
+
+<h3 id="seens-section">シーンを分けてシーンとシーンの間になにか処理を入れる</h3>
+
+<a href="#" id="seens">Start animation</a>
+<p id="seen-complete"></p>
+<div class="example">
+	<div id="seen-0" class="obj"></div>
+	<div id="seen-1" class="obj red"></div>
+	<div id="seen-2" class="obj right"></div>
+<script>
+var seens = {
+	'seen0' : [
+		{
+	        'self': $('#seen-0'),
+	        'startState': { 'left': '0' },
+	        'endState': { 'left': '220px' },
+	        'duration': 700,
+	        'delay': 0,
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-1'),
+	        'startState': { 'opacity': 1 },
+	        'endState': { 'opacity': 0 },
+	        'duration': 700,
+	        'delay': 800,
+	        'listenerObj': $('#seen-0'),
+	        'listenerEvt': 'end',
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-2'),
+	        'startState': { 'left': '120px' },
+	        'endState': { 'left': '0' },
+	        'duration': 700,
+	        'delay': 800,
+	        'listenerObj': $('#seen-1'),
+	        'listenerEvt': 'end',
+	        'completeFunc': nextSeen//次のシーンへ繋げる関数
+		}
+	],
+	'seen1' : [
+		{
+	        'self': $('#seen-0'),
+	        'startState': { 'left': '220px' },
+	        'endState': { 'left': '0' },
+	        'duration': 700,
+	        'delay': 1000,
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-1'),
+	        'startState': { 'opacity': 0 },
+	        'endState': { 'opacity': 1 },
+	        'duration': 700,
+	        'delay': 0,
+	        'listenerObj': $('#seen-0'),
+	        'listenerEvt': 'end',
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-2'),
+	        'startState': { 'left': '0' },
+	        'endState': { 'left': '120px' },
+	        'duration': 700,
+	        'delay': 0,
+	        'listenerObj': $('#seen-1'),
+	        'listenerEvt': 'end'
+		}
+	]
+};
+
+function nextSeen() {
+	$('#seen-complete').text('seen0 animation complete!');
+	chainAnimation(seens['seen1']);
+}
+
+$('#seens').bind('click', function(e) { e.preventDefault(); chainAnimation(seens['seen0']); });
+</script>
+</div>
+<h4>HTML</h4>
+<p class="wrap-code">
+<code>&lt;p id=&quot;seen-complete&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+	&lt;div id=&quot;normal-0&quot; class=&quot;obj&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;normal-1&quot; class=&quot;obj red&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;normal-2&quot; class=&quot;obj right&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+</p>
+<h4>JavaScript</h4>
+<p class="wrap-code">
+<code>var seens = {
+	'seen0' : [
+		{
+	        'self': $('#seen-0'),
+	        'startState': { 'left': '0' },
+	        'endState': { 'left': '220px' },
+	        'duration': 700,
+	        'delay': 0,
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-1'),
+	        'startState': { 'opacity': 1 },
+	        'endState': { 'opacity': 0 },
+	        'duration': 700,
+	        'delay': 800,
+	        'listenerObj': $('#seen-0'),
+	        'listenerEvt': 'end',
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-2'),
+	        'startState': { 'left': '120px' },
+	        'endState': { 'left': '0' },
+	        'duration': 700,
+	        'delay': 800,
+	        'listenerObj': $('#seen-1'),
+	        'listenerEvt': 'end',
+	        'completeFunc': nextSeen//次のシーンへ繋げる関数
+		}
+	],
+	'seen1' : [
+		{
+	        'self': $('#seen-0'),
+	        'startState': { 'left': '220px' },
+	        'endState': { 'left': '0' },
+	        'duration': 700,
+	        'delay': 1000,
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-1'),
+	        'startState': { 'opacity': 0 },
+	        'endState': { 'opacity': 1 },
+	        'duration': 700,
+	        'delay': 0,
+	        'listenerObj': $('#seen-0'),
+	        'listenerEvt': 'end',
+	        'completeEvent': 'end'
+	    }, {
+	        'self': $('#seen-2'),
+	        'startState': { 'left': '0' },
+	        'endState': { 'left': '120px' },
+	        'duration': 700,
+	        'delay': 0,
+	        'listenerObj': $('#seen-1'),
+	        'listenerEvt': 'end'
+		}
+	]
+};
+
+function nextSeen() {
+	$('#seen-complete').text('seen0 animation complete!');
+	chainAnimation(seens['seen1']);
+}
+
+chainAnimation(seens['seen0']);</code>
+</p>
+
+<h3 id="static-section">なにもしない</h3>
+<a href="#" id="static">Start animation</a>
+<div class="example">
+	<div id="static-0" class="obj"></div>
+	<div id="static-1" class="obj red"></div>
+	<div id="static-2" class="obj right"></div>
+<script>
+var statics = [{
+        'self': $('#static-0'),
+        'startState': { 'left': '0' },
+        'endState': { 'left': '120px' },
+        'type': 'static',//static でなにもしない
+        'duration': 700,
+        'delay': 0,
+        'completeEvent': 'end'
+    }, {
+        'self': $('#static-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'type': 'static',
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#static-0'),
+        'listenerEvt': 'end',
+        'completeEvent': 'end'
+    }, {
+        'self': $('#static-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'type': 'static',
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#static-1'),
+        'listenerEvt': 'end'
+}];
+$('#static').bind('click', function(e) { e.preventDefault(); chainAnimation(statics); });
+</script>
+</div>
+<h4>HTML</h4>
+<p class="wrap-code">
+<code>&lt;div class=&quot;example&quot;&gt;
+	&lt;div id=&quot;statics-0&quot; class=&quot;obj&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;statics-1&quot; class=&quot;obj red&quot;&gt;&lt;/div&gt;
+	&lt;div id=&quot;statics-2&quot; class=&quot;obj right&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+</p>
+<h4>JavaScript</h4>
+<p class="wrap-code">
+<code>var statics = [{
+        'self': $('#static-0'),
+        'startState': { 'left': '0' },
+        'endState': { 'left': '120px' },
+        'type': 'static',//static 指定でなにもしない
+        'duration': 700,
+        'delay': 0,
+        'completeEvent': 'end'
+    }, {
+        'self': $('#static-1'),
+        'startState': { 'opacity': 1 },
+        'endState': { 'opacity': 0 },
+        'type': 'static',
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#static-0'),
+        'listenerEvt': 'end',
+        'completeEvent': 'end'
+    }, {
+        'self': $('#static-2'),
+        'startState': { 'left': '120px' },
+        'endState': { 'left': '0' },
+        'type': 'static',
+        'duration': 700,
+        'delay': 800,
+        'listenerObj': $('#static-1'),
+        'listenerEvt': 'end'
+}];
+chainAnimation(statics);</code>
+</p>
+
+</section>
+	
+</body>
+</html>
