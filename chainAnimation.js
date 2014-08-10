@@ -4,6 +4,7 @@
 //vosegus.org
 
 function chainAnimation(json, option) {
+	var isTransform = typeof $("body").css("transform") === "string";
 	var isAnimation = true;
 	var seenLen = json.length;
 	var animationCount = 0;
@@ -51,24 +52,40 @@ function chainAnimation(json, option) {
 	};
 
 	function animate(obj) {
-		obj.self.stop(true, true).delay(obj.delay).animate(obj.endState,
-			{
-				duration : obj.duration,
-				easing   : obj.easing,
-				complete : function() {
+		if(isTransform) {
+			obj.self.transition(
+				obj.endState,
+				obj.duration,
+				obj.easing,
+				function() {
 					if(obj.completeFunc) {
 						if(obj.completeParam)
 							obj.completeFunc(obj.completeParam);
 						else
 							obj.completeFunc();
 					}
-					if(obj.completeEvent) {
-						obj.self.trigger(obj.completeEvent, this);
-					}
+					obj.self.trigger('end', this);
 					animationCount += 1;
 				}
-			}
-		);
+			);
+		} else {
+			obj.self.stop(true, true).delay(obj.delay).animate(obj.endState,
+				{
+					duration : obj.duration,
+					easing   : obj.easing,
+					complete : function() {
+						if(obj.completeFunc) {
+							if(obj.completeParam)
+								obj.completeFunc(obj.completeParam);
+							else
+								obj.completeFunc();
+						}
+						obj.self.trigger('end', this);
+						animationCount += 1;
+					}
+				}
+			);
+		}
 	};
 
 	function setStartState(json){
