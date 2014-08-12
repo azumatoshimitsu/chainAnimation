@@ -4,17 +4,10 @@
 //vosegus.org
 
 function chainAnimation(json, option) {
-	var isTransform = typeof $("body").css("transform") === "string";
 	var isAnimation = true;
 	var seenLen = json.length;
 	var animationCount = 0;
 	var isChain = (option && option.isChain)? option.isChain : false;
-	
-	$.each(json, function(index, value) {
-		if(json[index].type === 'static') {
-			seenLen -= 1;
-		}
-	});
 	//プロパティリセット
 	setStartState(json);
 
@@ -25,11 +18,13 @@ function chainAnimation(json, option) {
 			obj.easing    = obj.easing || 'linear';
 			obj.endState  = obj.endState;
 			obj.type      = obj.type || 'jQueryAnimate';
+			obj.listenerEvt = obj.listenerEvt || 'end';
 		//指定したオブジェクトのアニメーションが終わったら実行
 		if(obj.listenerObj) {
-			obj.listenerObj.on(obj.listenerEvt, function(){
+			obj.listenerObj.one(obj.listenerEvt, function(){
 				if(obj.type === 'jQueryAnimate') {
 					animate(obj);
+				console.log('fire');
 				}
 				if(obj.type === 'customFunc') {
 					runCustomFunction(obj);
@@ -44,6 +39,7 @@ function chainAnimation(json, option) {
 				runCustomFunction(obj);
 			}//.customFunction
 		}// end if
+			
 	});// end each
 
 	function runCustomFunction(obj) {
@@ -52,7 +48,7 @@ function chainAnimation(json, option) {
 	};
 
 	function animate(obj) {
-		if(isTransform) {
+		if(obj.self.transition) {
 			obj.self.transition(
 				obj.endState,
 				obj.duration,
