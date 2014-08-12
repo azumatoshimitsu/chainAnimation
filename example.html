@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>chainAnimation.js</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
 <script src="chainAnimation.js"></script>
 <style>
 body {
@@ -14,7 +14,7 @@ body {
 }
 .wrap-code {
 	background: #333;
-	margin-bottom: 40px;
+	margin: 0 0 60px 0;
 	padding: 20px 30px; 
 	color: #FFF;
 	border-radius: 10px;
@@ -53,7 +53,7 @@ code { white-space: pre; }
 <h2>Install</h2>
 <p class="wrap-code">
 <code>&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;
-<code>&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;chainAnimation.js&quot;&gt;&lt;/script&gt;</code>
 </p>
@@ -69,13 +69,13 @@ code { white-space: pre; }
 	'type'                  : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
 	'delay'                 : Number,
 	'duration'            : Number,
-	'easing'               : String 'jQuery easing'
+	'easing'               : String //jQuery easing
 	'listenerObj'        : $('trigger object'), //Trigger Object
 	'listenerEvt'         : String, // Trigger Event
-	'completeFunc'   : Function, //jQuery animation complete Event function
+	'completeFunc'   : Function, //Complete Event function
 	'customFunc'      : Function //Custom funtion name
 }</code>
-<p>
+</p>
 </section>
 
 <section>

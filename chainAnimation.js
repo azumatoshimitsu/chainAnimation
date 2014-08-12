@@ -24,7 +24,6 @@ function chainAnimation(json, option) {
 			obj.listenerObj.one(obj.listenerEvt, function(){
 				if(obj.type === 'jQueryAnimate') {
 					animate(obj);
-				console.log('fire');
 				}
 				if(obj.type === 'customFunc') {
 					runCustomFunction(obj);

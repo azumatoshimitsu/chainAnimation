@@ -7,6 +7,7 @@ chainAnimation.js は JSON データを受け取ってアニメーションを�
 ```javascript
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
 <script src="chainAnimation.js"></script>
 ```
 
@@ -22,7 +23,6 @@ var seen = [{
 	'easing'        : String 'jQuery easing'
 	'listenerObj'   : $('trigger object'), //Trigger Object
 	'listenerEvt'   : String, // Trigger Event
-	'completeEvent' : String, //jQuery animation complete Event name
 	'completeFunc'  : Function, //jQuery animation complete Event function
 	'customFunc'    : Function //Custom funtion name
 }];
