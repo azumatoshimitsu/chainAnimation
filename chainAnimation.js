@@ -48,7 +48,7 @@ function chainAnimation(json, option) {
 
 	function animate(obj) {
 		if(Modernizr.cssanimations) {
-			obj.self.transition(
+			obj.self.delay(obj.delay).transition(
 				obj.endState,
 				obj.duration,
 				obj.easing,
