@@ -64,17 +64,18 @@ code { white-space: pre; }
 <h2>JSON Semantics</h2>
 <p class="wrap-code">
 <code>{
-	'self'                    : $('target object'), //Animation target 
-	'startState'         : { 'CSS Selector' : 'CSS Property' }, //Start CSS
-	'endState'           : { 'CSS Selector' : 'CSS Property' }, //End CSS
-	'type'                  : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
-	'delay'                 : Number,
-	'duration'            : Number,
-	'easing'               : String //jQuery easing
-	'listenerObj'        : $('trigger object'), //Trigger Object
-	'listenerEvt'         : String, // Trigger Event
-	'completeFunc'   : Function, //Complete Event function
-	'customFunc'      : Function //Custom funtion name
+	'self'         : $('target object'), //Animation target 
+	'startState'   : { 'CSS Selector' : 'CSS Property' }, //Start CSS
+	'endState'     : { 'CSS Selector' : 'CSS Property' }, //End CSS
+	'type'         : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
+	'delay'        : Number,
+	'duration'     : Number,
+	'easing'       : String //jQuery easing
+	'listenerObj'  : $('trigger object'), //Trigger Object
+	'listenerEvt'  : String, // default end,
+	'triggerEvt'   : String, // default end,
+	'completeFunc' : Function, //Complete Event function
+	'customFunc'   : Function //Custom funtion name
 }</code>
 </p>
 </section>

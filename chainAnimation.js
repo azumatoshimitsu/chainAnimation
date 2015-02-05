@@ -8,6 +8,7 @@ function chainAnimation(json, option) {
 	var seenLen = json.length;
 	var animationCount = 0;
 	var isChain = (option && option.isChain)? option.isChain : false;
+	var isStop = false;
 	//プロパティリセット
 	setStartState(json);
 
@@ -19,23 +20,25 @@ function chainAnimation(json, option) {
 			obj.endState  = obj.endState;
 			obj.type      = obj.type || 'jQueryAnimate';
 			obj.listenerEvt = obj.listenerEvt || 'end';
+			obj.triggerEvt = obj.triggerEvt || 'end';
+
 		//指定したオブジェクトのアニメーションが終わったら実行
 		if(obj.listenerObj) {
 			obj.listenerObj.one(obj.listenerEvt, function(){
 				if(obj.type === 'jQueryAnimate') {
-					animate(obj);
+					animate(obj, index);
 				}
 				if(obj.type === 'customFunc') {
-					runCustomFunction(obj);
+					runCustomFunction(obj, index);
 				}//.customFunction
 			});//.on
 		}//.customEvent
 		else {//そのまま実行
 			if(obj.type === 'jQueryAnimate') {
-				animate(obj);
+				animate(obj, index);
 			}
 			if(obj.type === 'customFunc') {
-				runCustomFunction(obj);
+				runCustomFunction(obj, index);
 			}//.customFunction
 		}// end if
 			
@@ -46,24 +49,8 @@ function chainAnimation(json, option) {
 		obj.customFunc(obj);
 	};
 
-	function animate(obj) {
-		if(Modernizr.cssanimations) {
-			obj.self.delay(obj.delay).transition(
-				obj.endState,
-				obj.duration,
-				obj.easing,
-				function() {
-					if(obj.completeFunc) {
-						if(obj.completeParam)
-							obj.completeFunc(obj.completeParam);
-						else
-							obj.completeFunc();
-					}
-					obj.self.trigger('end', this);
-					animationCount += 1;
-				}
-			);
-		} else {
+	function animate(obj, index) {
+		if(!isStop) {
 			obj.self.stop(true, true).delay(obj.delay).animate(obj.endState,
 				{
 					duration : obj.duration,
@@ -75,8 +62,11 @@ function chainAnimation(json, option) {
 							else
 								obj.completeFunc();
 						}
-						obj.self.trigger('end', this);
+						obj.self.trigger(obj.triggerEvt, this);
 						animationCount += 1;
+						if(index === seenLen - 1) {
+							$(window).trigger('chainAnimationEnd', this);
+						}
 					}
 				}
 			);
@@ -89,4 +79,10 @@ function chainAnimation(json, option) {
 				json[index].self.css(json[index].startState);
 		});
 	};
+
+	return {
+		stop : function() {
+			isStop = true;
+		}
+	}
 };
