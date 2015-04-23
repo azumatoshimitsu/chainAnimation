@@ -64,14 +64,14 @@ code { white-space: pre; }
 <h2>JSON Semantics</h2>
 <p class="wrap-code">
 <code>{
-	'self'         : $('target object'), //Animation target 
+	'self'         : 'target object', //Animation target 
 	'startState'   : { 'CSS Selector' : 'CSS Property' }, //Start CSS
 	'endState'     : { 'CSS Selector' : 'CSS Property' }, //End CSS
 	'type'         : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
 	'delay'        : Number,
 	'duration'     : Number,
 	'easing'       : String //jQuery easing
-	'listenerObj'  : $('trigger object'), //Trigger Object
+	'listenerObj'  : 'trigger object', //Trigger Object
 	'listenerEvt'  : String, // default end,
 	'triggerEvt'   : String, // default end,
 	'completeFunc' : Function, //Complete Event function
@@ -96,26 +96,26 @@ code { white-space: pre; }
 	<div id="normal-2" class="obj right"></div>
 <script>
 var seen = [{
-        'self': $('#normal-0'),
+        'self': '#normal-0',
         'startState': { 'left': '0' },
         'endState': { 'left': '120px' },
         'duration': 700,
         'delay': 0
     }, {
-        'self': $('#normal-1'),
+        'self': '#normal-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#normal-0'),
+        'listenerObj': '#normal-0',
         'listenerEvt': 'end'
     }, {
-        'self': $('#normal-2'),
+        'self': '#normal-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#normal-1'),
+        'listenerObj': '#normal-1',
         'listenerEvt': 'end'
 }];
 $('#normal').bind('click', function(e) { e.preventDefault(); chainAnimation(seen); });
@@ -132,26 +132,26 @@ $('#normal').bind('click', function(e) { e.preventDefault(); chainAnimation(seen
 <h4>JavaScript</h4>
 <p class="wrap-code">
 <code>var seen = [{
-        'self': $('#normal-0'),
+        'self': '#normal-0',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'duration': 700,
         'delay': 800,//アニメーション開始までの遅延
     }, {
-        'self': $('#normal-1'),
+        'self': '#normal-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#normal-0'),//このオブジェクトの
+        'listenerObj': '#normal-0',//このオブジェクトの
         'listenerEvt': 'end'//end イベントが発火したらアニメーション開始
     }, {
-        'self': $('#normal-2'),
+        'self': '#normal-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#normal-1'),
+        'listenerObj': '#normal-1',
         'listenerEvt': 'end'
 }];
 chainAnimation(seen);</code>
@@ -165,30 +165,30 @@ chainAnimation(seen);</code>
 	<div id="custom-func-2" class="obj right"></div>
 <script>
 var custom = [{
-        'self': $('#custom-func-0'),
+        'self': '#custom-func-0',
         'type': 'customFunc',//customFunc で関数を実行
         'customFunc': myCustomFunc//実行する customFunc 関数名
     }, {
-        'self': $('#custom-func-1'),
+        'self': '#custom-func-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'duration': 700,
         'delay': 0,
-        'listenerObj': $('#custom-func-0'),
+        'listenerObj': '#custom-func-0',
         'listenerEvt': 'end'
     }, {
-        'self': $('#custom-func-2'),
+        'self': '#custom-func-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#custom-func-1'),
+        'listenerObj': '#custom-func-1',
         'listenerEvt': 'end'
 }];
 function myCustomFunc(obj) {
-	obj.self.text('add text');
+	$(obj.self).text('add text');
 	setTimeout(function() {
-		obj.self.trigger('end', this);
+		$(obj.self).trigger('end', this);
 	}, 500);
 }
 $('#custom-func').bind('click', function(e) { e.preventDefault(); chainAnimation(custom); });
@@ -205,24 +205,24 @@ $('#custom-func').bind('click', function(e) { e.preventDefault(); chainAnimation
 <h4>JavaScript</h4>
 <p class="wrap-code">
 <code>var custom = [{
-        'self': $('#custom-func-0'),
+        'self': '#custom-func-0',
         'type': 'customFunc',//customFunc で関数を実行
         'customFunc': myCustomFunc//実行する customFunc 関数名
     }, {
-        'self': $('#custom-func-1'),
+        'self': '#custom-func-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'duration': 700,
         'delay': 0,
-        'listenerObj': $('#custom-func-0'),
+        'listenerObj': '#custom-func-0',
         'listenerEvt': 'end'
     }, {
-        'self': $('#custom-func-2'),
+        'self': '#custom-func-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#custom-func-1'),
+        'listenerObj': '#custom-func-1',
         'listenerEvt': 'end'
 }];
 function myCustomFunc(obj) {
@@ -246,52 +246,52 @@ chainAnimation(custom);</code>
 var seens = {
 	'seen0' : [
 		{
-	        'self': $('#seen-0'),
+	        'self': '#seen-0',
 	        'startState': { 'left': '0' },
 	        'endState': { 'left': '220px' },
 	        'duration': 700,
 	        'delay': 0
 	    }, {
-	        'self': $('#seen-1'),
+	        'self': '#seen-1',
 	        'startState': { 'opacity': 1 },
 	        'endState': { 'opacity': 0 },
 	        'duration': 700,
 	        'delay': 800,
-	        'listenerObj': $('#seen-0'),
+	        'listenerObj': '#seen-0',
 	        'listenerEvt': 'end'
 	    }, {
-	        'self': $('#seen-2'),
+	        'self': '#seen-2',
 	        'startState': { 'left': '120px' },
 	        'endState': { 'left': '0' },
 	        'duration': 700,
 	        'delay': 800,
-	        'listenerObj': $('#seen-1'),
+	        'listenerObj': '#seen-1',
 	        'listenerEvt': 'end',
 	        'completeFunc': nextSeen//次のシーンへ繋げる関数
 		}
 	],
 	'seen1' : [
 		{
-	        'self': $('#seen-0'),
+	        'self': '#seen-0',
 	        'startState': { 'left': '220px' },
 	        'endState': { 'left': '0' },
 	        'duration': 700,
 	        'delay': 1000
 	    }, {
-	        'self': $('#seen-1'),
+	        'self': '#seen-1',
 	        'startState': { 'opacity': 0 },
 	        'endState': { 'opacity': 1 },
 	        'duration': 700,
 	        'delay': 0,
-	        'listenerObj': $('#seen-0'),
+	        'listenerObj': '#seen-0',
 	        'listenerEvt': 'end'
 	    }, {
-	        'self': $('#seen-2'),
+	        'self': '#seen-2',
 	        'startState': { 'left': '0' },
 	        'endState': { 'left': '120px' },
 	        'duration': 700,
 	        'delay': 0,
-	        'listenerObj': $('#seen-1'),
+	        'listenerObj': '#seen-1',
 	        'listenerEvt': 'end'
 		}
 	]
@@ -319,52 +319,52 @@ $('#seens').bind('click', function(e) { e.preventDefault(); chainAnimation(seens
 <code>var seens = {
 	'seen0' : [
 		{
-	        'self': $('#seen-0'),
+	        'self': '#seen-0',
 	        'startState': { 'left': '0' },
 	        'endState': { 'left': '220px' },
 	        'duration': 700,
 	        'delay': 0
 	    }, {
-	        'self': $('#seen-1'),
+	        'self': '#seen-1',
 	        'startState': { 'opacity': 1 },
 	        'endState': { 'opacity': 0 },
 	        'duration': 700,
 	        'delay': 800,
-	        'listenerObj': $('#seen-0'),
+	        'listenerObj': '#seen-0',
 	        'listenerEvt': 'end'
 	    }, {
-	        'self': $('#seen-2'),
+	        'self': '#seen-2',
 	        'startState': { 'left': '120px' },
 	        'endState': { 'left': '0' },
 	        'duration': 700,
 	        'delay': 800,
-	        'listenerObj': $('#seen-1'),
+	        'listenerObj': '#seen-1',
 	        'listenerEvt': 'end',
 	        'completeFunc': nextSeen//次のシーンへ繋げる関数
 		}
 	],
 	'seen1' : [
 		{
-	        'self': $('#seen-0'),
+	        'self': '#seen-0',
 	        'startState': { 'left': '220px' },
 	        'endState': { 'left': '0' },
 	        'duration': 700,
 	        'delay': 1000
 	    }, {
-	        'self': $('#seen-1'),
+	        'self': '#seen-1',
 	        'startState': { 'opacity': 0 },
 	        'endState': { 'opacity': 1 },
 	        'duration': 700,
 	        'delay': 0,
-	        'listenerObj': $('#seen-0'),
+	        'listenerObj': '#seen-0',
 	        'listenerEvt': 'end'
 	    }, {
-	        'self': $('#seen-2'),
+	        'self': '#seen-2',
 	        'startState': { 'left': '0' },
 	        'endState': { 'left': '120px' },
 	        'duration': 700,
 	        'delay': 0,
-	        'listenerObj': $('#seen-1'),
+	        'listenerObj': '#seen-1',
 	        'listenerEvt': 'end'
 		}
 	]
@@ -386,29 +386,29 @@ chainAnimation(seens['seen0']);</code>
 	<div id="static-2" class="obj right"></div>
 <script>
 var statics = [{
-        'self': $('#static-0'),
+        'self': '#static-0',
         'startState': { 'left': '0' },
         'endState': { 'left': '120px' },
         'type': 'static',//static でなにもしない
         'duration': 700,
         'delay': 0
     }, {
-        'self': $('#static-1'),
+        'self': '#static-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'type': 'static',
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#static-0'),
+        'listenerObj': '#static-0',
         'listenerEvt': 'end'
     }, {
-        'self': $('#static-2'),
+        'self': '#static-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'type': 'static',
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#static-1'),
+        'listenerObj': '#static-1',
         'listenerEvt': 'end'
 }];
 $('#static').bind('click', function(e) { e.preventDefault(); chainAnimation(statics); });
@@ -425,29 +425,29 @@ $('#static').bind('click', function(e) { e.preventDefault(); chainAnimation(stat
 <h4>JavaScript</h4>
 <p class="wrap-code">
 <code>var statics = [{
-        'self': $('#static-0'),
+        'self': '#static-0',
         'startState': { 'left': '0' },
         'endState': { 'left': '120px' },
         'type': 'static',//static 指定でなにもしない
         'duration': 700,
         'delay': 0
     }, {
-        'self': $('#static-1'),
+        'self': '#static-1',
         'startState': { 'opacity': 1 },
         'endState': { 'opacity': 0 },
         'type': 'static',
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#static-0'),
+        'listenerObj': '#static-0',
         'listenerEvt': 'end'
     }, {
-        'self': $('#static-2'),
+        'self': '#static-2',
         'startState': { 'left': '120px' },
         'endState': { 'left': '0' },
         'type': 'static',
         'duration': 700,
         'delay': 800,
-        'listenerObj': $('#static-1'),
+        'listenerObj': '#static-1',
         'listenerEvt': 'end'
 }];
 chainAnimation(statics);</code>
