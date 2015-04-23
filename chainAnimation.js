@@ -24,7 +24,7 @@ function chainAnimation(json, option) {
 
 		//指定したオブジェクトのアニメーションが終わったら実行
 		if(obj.listenerObj) {
-			obj.listenerObj.one(obj.listenerEvt, function(){
+			$(obj.listenerObj).one(obj.listenerEvt, function(){
 				if(obj.type === 'jQueryAnimate') {
 					animate(obj, index);
 				}
@@ -51,7 +51,7 @@ function chainAnimation(json, option) {
 
 	function animate(obj, index) {
 		if(!isStop) {
-			obj.self.stop(true, true).delay(obj.delay).animate(obj.endState,
+			$(obj.self).stop(true, true).delay(obj.delay).animate(obj.endState,
 				{
 					duration : obj.duration,
 					easing   : obj.easing,
@@ -62,7 +62,7 @@ function chainAnimation(json, option) {
 							else
 								obj.completeFunc();
 						}
-						obj.self.trigger(obj.triggerEvt, this);
+						$(obj.self).trigger(obj.triggerEvt, this);
 						animationCount += 1;
 						if(index === seenLen - 1) {
 							$(window).trigger('chainAnimationEnd', this);
@@ -76,7 +76,7 @@ function chainAnimation(json, option) {
 	function setStartState(json){
 		$.each(json, function(index, value) {
 			if(json[index].startState)
-				json[index].self.css(json[index].startState);
+				$(json[index].self).css(json[index].startState);
 		});
 	};
 
