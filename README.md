@@ -14,14 +14,14 @@ chainAnimation.js は JSON データを受け取ってアニメーションを�
 ##Example
 ```javascript
 var seen = [{
-	'self'          : $('target object'), //Animation target 
+	'self'          : 'target object', //Animation target 
 	'startState'    : { 'CSS Selector' : 'CSS Property' }, //Start CSS Style
 	'endState'      : { 'CSS Selector' : 'CSS Property' }, //End CSS Style
 	'type'          : String 'jQueryAnimate' or 'customFunc' or 'static' default = 'jQueryAnimate',
 	'delay'         : Number,
 	'duration'      : Number,
 	'easing'        : String 'jQuery easing'
-	'listenerObj'   : $('trigger object'), //Trigger Object
+	'listenerObj'   : 'trigger object', //Trigger Object
 	'listenerEvt'   : String, // Trigger Event
 	'completeFunc'  : Function, //jQuery animation complete Event function
 	'customFunc'    : Function //Custom funtion name
